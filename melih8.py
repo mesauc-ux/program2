@@ -9675,7 +9675,8 @@ HTML_TEMPLATE = '''
                 console.log(`🔎 ${studentName} için DOM'da çakışma: ${conflicts.length}`);
 
                 if (conflicts.length > 0) {
-                    errors.push(`${studentName}: [Tablo Kontrolü] Öğrenci program tablosunda ${swapPendingData.targetDay} ${swapPendingData.targetTime} saatinde görünüyor`);
+                    const cleanDay = extractDayName(swapPendingData.targetDay);
+                    errors.push(`${studentName}: ${cleanDay} ${swapPendingData.targetTime} çakışma`);
                 }
             }
 
@@ -9695,7 +9696,8 @@ HTML_TEMPLATE = '''
                 console.log(`🔎 ${studentName} için DOM'da çakışma: ${conflicts.length}`);
 
                 if (conflicts.length > 0) {
-                    errors.push(`${studentName}: [Tablo Kontrolü] Öğrenci program tablosunda ${draggedData.day} ${draggedData.time} saatinde görünüyor`);
+                    const cleanDay = extractDayName(draggedData.day);
+                    errors.push(`${studentName}: ${cleanDay} ${draggedData.time} çakışma`);
                 }
             }
 
@@ -10733,9 +10735,9 @@ HTML_TEMPLATE = '''
                             // HEMEN RETURN ETME, HATAYA EKLE
                             errors.push({
                                 type: 'conflict',
-                                icon: '🔴',
-                                title: 'Veri Çakışması',
-                                message: `[Sistem Kontrolü] ${studentName} kayıtlı verilerde ${cleanToDay} ${toTime} saatinde başka bir ders alıyor!`
+                                icon: '⚠️',
+                                title: 'Çakışma',
+                                message: `${studentName}: ${cleanToDay} ${toTime} çakışma`
                             });
                             break; // Ayni hatayi tekrar eklememek icin cik
                         }
