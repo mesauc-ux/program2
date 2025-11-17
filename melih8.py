@@ -9641,7 +9641,8 @@ HTML_TEMPLATE = '''
             const errors = [];
 
             // ═══════════════════════════════════════════════════════════
-            // 🆕 1️⃣ ÖNCE DOM-BASED ÇAKIŞMA KONTROLÜ (globalScheduleData DEĞİL!)
+            // 🆕 1️⃣ ÖNCE DOM-BASED ÇAKIŞMA KONTROLÜ (TABLO KONTROLÜ)
+            // Kullanıcının gördüğü tabloyu kontrol eder (hızlı, görsel)
             // ═══════════════════════════════════════════════════════════
             console.log('🔍 DOM-based çakışma kontrolü başlıyor...');
 
@@ -9674,7 +9675,7 @@ HTML_TEMPLATE = '''
                 console.log(`🔎 ${studentName} için DOM'da çakışma: ${conflicts.length}`);
 
                 if (conflicts.length > 0) {
-                    errors.push(`${studentName}: Çakışma - ${studentName} zaten ${swapPendingData.targetDay} ${swapPendingData.targetTime}'de başka bir derste!`);
+                    errors.push(`${studentName}: [Tablo Kontrolü] Öğrenci program tablosunda ${swapPendingData.targetDay} ${swapPendingData.targetTime} saatinde görünüyor`);
                 }
             }
 
@@ -9694,14 +9695,15 @@ HTML_TEMPLATE = '''
                 console.log(`🔎 ${studentName} için DOM'da çakışma: ${conflicts.length}`);
 
                 if (conflicts.length > 0) {
-                    errors.push(`${studentName}: Çakışma - ${studentName} zaten ${draggedData.day} ${draggedData.time}'de başka bir derste!`);
+                    errors.push(`${studentName}: [Tablo Kontrolü] Öğrenci program tablosunda ${draggedData.day} ${draggedData.time} saatinde görünüyor`);
                 }
             }
 
             console.log('🔍 DOM-based çakışma kontrolü bitti. Bulunan hatalar:', errors.length);
 
             // ═══════════════════════════════════════════════════════════
-            // 2️⃣ SONRA validateMove İLE KISITLAMA KONTROLÜ
+            // 2️⃣ SONRA validateMove İLE SİSTEM KONTROLÜ
+            // Backend'den güncel veri alır, kısıtlamaları ve öğretmen engellerini kontrol eder
             // ═══════════════════════════════════════════════════════════
 
             // KAYNAK TARAFTAKI TUM OGRENCILER ICIN KONTROL
@@ -10731,9 +10733,9 @@ HTML_TEMPLATE = '''
                             // HEMEN RETURN ETME, HATAYA EKLE
                             errors.push({
                                 type: 'conflict',
-                                icon: '',
-                                title: 'Cakisma',
-                                message: `${studentName} zaten ${cleanToDay} ${toTime}'de baska bir ders aliyor!`
+                                icon: '🔴',
+                                title: 'Veri Çakışması',
+                                message: `[Sistem Kontrolü] ${studentName} kayıtlı verilerde ${cleanToDay} ${toTime} saatinde başka bir ders alıyor!`
                             });
                             break; // Ayni hatayi tekrar eklememek icin cik
                         }
